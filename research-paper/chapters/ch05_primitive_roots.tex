@@ -1,3 +1,88 @@
 \chapter{Primitive Roots and Quadratic Residues}\label{ch:primroots}
 
-\textit{[Stage 4 -- to be drafted. Planned content: order of an element modulo $n$, primitive roots, existence for $n=p$ prime, quadratic residues and the Legendre symbol, and the discrete logarithm problem that underlies Diffie--Hellman.]}
+This chapter studies the multiplicative structure of $\mathbb{Z}_n$. Primitive roots give a way to write every unit as a power of one element, which is the basis of the discrete logarithm problem used in Diffie--Hellman.
+
+\section{Order of an Element}
+
+\begin{definition}
+Let $\gcd(a,n)=1$. The \emph{order} of $a$ modulo $n$ is the least $k\ge 1$ with $a^k\equiv 1\pmod n$. We write $\operatorname{ord}_n(a)=k$.
+\end{definition}
+
+The order exists by Euler's theorem (Theorem~\ref{thm:euler}), since $a^{\varphi(n)}\equiv 1$.
+
+\begin{proposition}\label{prop:order-divides}
+If $a^k\equiv 1\pmod n$, then $\operatorname{ord}_n(a)\mid k$.
+\end{proposition}
+
+\begin{proof}
+Let $d=\operatorname{ord}_n(a)$ and write $k=qd+r$ with $0\le r<d$. Then $a^r=a^k(a^d)^{-q}\equiv 1\pmod n$. Minimality of $d$ forces $r=0$.
+\end{proof}
+
+\begin{corollary}
+$\operatorname{ord}_n(a)\mid\varphi(n)$ for every $a$ coprime to $n$.
+\end{corollary}
+
+\section{Primitive Roots}
+
+\begin{definition}
+An integer $g$ with $\gcd(g,n)=1$ is a \emph{primitive root modulo $n$} if $\operatorname{ord}_n(g)=\varphi(n)$. Equivalently, the powers $g^0,g^1,\dots,g^{\varphi(n)-1}$ run through every unit modulo $n$ exactly once.
+\end{definition}
+
+\begin{example}
+Modulo $7$, the element $3$ is a primitive root. Its powers are $3,2,6,4,5,1$, which contain every nonzero residue exactly once. Modulo $8$ there is no primitive root, since the units $\{1,3,5,7\}$ all satisfy $a^2\equiv 1$, so no element has order $\varphi(8)=4$.
+\end{example}
+
+\begin{theorem}[Existence of primitive roots modulo primes]\label{thm:prim-root-prime}
+For every prime $p$ there is a primitive root modulo $p$. Equivalently, the multiplicative group $\mathbb{Z}_p^{\times}$ is cyclic.
+\end{theorem}
+
+\begin{proof}[Proof outline]
+Let $d\mid p-1$. The polynomial $x^d-1$ over the field $\mathbb{Z}_p$ has at most $d$ roots, so at most $d$ elements satisfy $a^d=1$. Counting elements by order gives $\sum_{d\mid p-1}\psi(d)=p-1$, where $\psi(d)$ is the number of elements of order $d$. If no element had order $p-1$, then each $\psi(d)$ with $d\mid p-1$, $d<p-1$ would be at most $\varphi(d)$, and the sum would fall short of $p-1$. The full argument, including the identity $\sum_{d\mid m}\varphi(d)=m$, is in Hardy and Wright~\cite{hardy2008}.
+\end{proof}
+
+\begin{remark}
+Primitive roots exist modulo $n$ exactly when $n=1,2,4,p^k,2p^k$ with $p$ an odd prime. This is stated without proof and is used only as a remark.
+\end{remark}
+
+\section{Discrete Logarithms}
+
+If $g$ is a primitive root modulo $p$ and $\gcd(a,p)=1$, there is a unique exponent $x$ in $\{0,\dots,p-2\}$ with $g^x\equiv a\pmod p$. This $x$ is the \emph{discrete logarithm} of $a$ to base $g$.
+
+Computing $g^x\bmod p$ is fast by Chapter~\ref{ch:congruences}. Recovering $x$ from $g^x$ is believed to be hard for large $p$, and this one-way behaviour is what the Diffie--Hellman scheme in Chapter~\ref{ch:crypto} relies on.
+
+\section{Quadratic Residues}
+
+\begin{definition}
+Let $p$ be an odd prime and $\gcd(a,p)=1$. The integer $a$ is a \emph{quadratic residue} modulo $p$ if $x^2\equiv a\pmod p$ has a solution. Otherwise $a$ is a \emph{quadratic non-residue}.
+\end{definition}
+
+\begin{definition}[Legendre symbol]
+For an odd prime $p$, define $\left(\frac{a}{p}\right)=1$ if $a$ is a quadratic residue, $-1$ if it is a non-residue, and $0$ if $p\mid a$.
+\end{definition}
+
+\begin{theorem}[Euler's criterion]\label{thm:euler-criterion}
+For an odd prime $p$ and $p\nmid a$,
+\[
+  \left(\frac{a}{p}\right)\equiv a^{(p-1)/2}\pmod p.
+\]
+\end{theorem}
+
+\begin{proof}
+Let $g$ be a primitive root modulo $p$ (Theorem~\ref{thm:prim-root-prime}) and write $a\equiv g^k$. Then $a^{(p-1)/2}\equiv g^{k(p-1)/2}$, which is $1$ when $k$ is even and $-1$ when $k$ is odd, because $g^{(p-1)/2}$ is a square root of $1$ different from $1$. Squares modulo $p$ are exactly the even powers of $g$, so the claim follows.
+\end{proof}
+
+\begin{proposition}\label{prop:legendre-mult}
+$\left(\frac{ab}{p}\right)=\left(\frac{a}{p}\right)\left(\frac{b}{p}\right)$.
+\end{proposition}
+
+\begin{proof}
+Apply Theorem~\ref{thm:euler-criterion} to $ab$, using $(ab)^{(p-1)/2}=a^{(p-1)/2}b^{(p-1)/2}$.
+\end{proof}
+
+\begin{example}
+Modulo $11$, the quadratic residues are $1,3,4,5,9$. Check: $5^2=25\equiv 3$, and $\left(\frac{5}{11}\right)\equiv 5^{5}=3125\equiv 1\pmod{11}$. Thus $5$ is a residue, consistent with $5^2\equiv 3$.
+\end{example}
+
+\section{Summary}
+
+Primitive roots make the unit group of $\mathbb{Z}_p$ cyclic, so every unit is a power of one generator. Euler's criterion decides quadratic residuosity by a single modular exponentiation. Both facts reappear in Chapter~\ref{ch:crypto}.
