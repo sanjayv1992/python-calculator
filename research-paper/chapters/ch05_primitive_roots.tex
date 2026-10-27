@@ -83,6 +83,92 @@ Apply Theorem~\ref{thm:euler-criterion} to $ab$, using $(ab)^{(p-1)/2}=a^{(p-1)/
 Modulo $11$, the quadratic residues are $1,3,4,5,9$. Check: $5^2=25\equiv 3$, and $\left(\frac{5}{11}\right)\equiv 5^{5}=3125\equiv 1\pmod{11}$. Thus $5$ is a residue, consistent with $5^2\equiv 3$.
 \end{example}
 
+\section{Gauss's Lemma}
+
+Gauss's lemma gives a counting criterion for the Legendre symbol. It is the key step in the proof of quadratic reciprocity.
+
+\begin{lemma}[Gauss]\label{lem:gauss}
+Let $p$ be an odd prime and $p\nmid a$. Let $m=\frac{p-1}{2}$. For $1\le k\le m$, let $r_k$ be the least absolute residue of $ka$ modulo $p$, so that $r_k\equiv ka\pmod p$ and $-p/2<r_k<p/2$. Let $\mu$ be the number of $k$ with $r_k<0$. Then
+\[
+  \left(\frac{a}{p}\right)=(-1)^{\mu}.
+\]
+\end{lemma}
+
+\begin{proof}
+First, the numbers $|r_1|,\dots,|r_m|$ are distinct and lie in $\{1,\dots,m\}$. Indeed, $|r_k|\ne 0$ since $p\nmid ka$. If $|r_k|=|r_l|$ with $k\ne l$, then $ka\equiv\pm la\pmod p$, and since $p\nmid a$ this gives $k\equiv\pm l\pmod p$. But $1\le k,l\le m$ and $k\ne l$ rule out both $k\equiv l$ and $k+l\equiv 0$, because $2\le k+l\le p-1$. So the $m$ numbers $|r_k|$ are distinct, and they must be exactly $\{1,\dots,m\}$.
+
+Taking the product over $k$,
+\[
+  \prod_{k=1}^{m} r_k = (-1)^{\mu}\prod_{k=1}^m |r_k| = (-1)^{\mu}\, m!.
+\]
+On the other hand $r_k\equiv ka\pmod p$, so
+\[
+  \prod_{k=1}^{m} r_k\equiv a^{m}\, m!\pmod p.
+\]
+Since $m!$ is coprime to $p$, we may cancel it, giving $a^{m}\equiv(-1)^{\mu}\pmod p$. By Euler's criterion (Theorem~\ref{thm:euler-criterion}), $\left(\frac{a}{p}\right)\equiv a^{m}\equiv(-1)^{\mu}$. Both sides are $\pm 1$ and $p>2$, so they are equal.
+\end{proof}
+
+\begin{example}
+Take $p=7$, $a=3$. Then $m=3$ and the residues are $r_1=3$, $r_2=6\equiv -1$, $r_3=9\equiv 2$. Only $r_2$ is negative, so $\mu=1$ and $\left(\frac{3}{7}\right)=-1$. Check: the quadratic residues modulo $7$ are $1,2,4$, so $3$ is a non-residue.
+\end{example}
+
+\section{Quadratic Reciprocity}
+
+\begin{theorem}[Law of quadratic reciprocity]\label{thm:reciprocity}
+Let $p$ and $q$ be distinct odd primes. Then
+\[
+  \left(\frac{p}{q}\right)\left(\frac{q}{p}\right)=(-1)^{\frac{p-1}{2}\cdot\frac{q-1}{2}}.
+\]
+\end{theorem}
+
+The proof uses the following consequence of Lemma~\ref{lem:gauss}, in the form first used by Eisenstein.
+
+\begin{lemma}\label{lem:eisenstein}
+Let $p$ be an odd prime, $m=\frac{p-1}{2}$ and let $a$ be an odd integer with $p\nmid a$. Then
+\[
+  \left(\frac{a}{p}\right)=(-1)^{\sum_{k=1}^{m}\lfloor ka/p\rfloor}.
+\]
+\end{lemma}
+
+\begin{proof}
+For each $k$ write $ka=p\,q_k+s_k$ with $q_k=\lfloor ka/p\rfloor$ and $0<s_k<p$. Let $\mu'$ be the number of $k$ with $s_k>p/2$. Then $r_k=s_k$ when $s_k<p/2$, and $r_k=s_k-p$ when $s_k>p/2$. So $\mu=\mu'$ in Lemma~\ref{lem:gauss}.
+
+Let $M=\sum_{k=1}^m k=\frac{m(m+1)}{2}$. Summing $ka=pq_k+s_k$ over $k$ gives
+\[
+  aM = pQ+\sum_k s_k,\qquad Q=\sum_{k=1}^m q_k.
+\]
+Let $A=\sum_{s_k<p/2}s_k$ and $B=\sum_{s_k>p/2}s_k$. The values $|r_k|$ are $\{1,\dots,m\}$, so
+\[
+  M = A + \sum_{s_k>p/2}(p-s_k) = A + \mu p - B.
+\]
+Adding $aM=pQ+A+B$ and $M=A+\mu p-B$ eliminates $B$ and gives
+\[
+  (a+1)M = p(Q+\mu)+2A.
+\]
+Since $a$ is odd, $a+1$ is even, so the left side is even. Hence $p(Q+\mu)$ is even, and as $p$ is odd, $Q\equiv\mu\pmod 2$. Therefore $\left(\frac{a}{p}\right)=(-1)^{\mu}=(-1)^{Q}$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:reciprocity}]
+Let $m=\frac{p-1}{2}$ and $n=\frac{q-1}{2}$. By Lemma~\ref{lem:eisenstein} with $a=q$ and with the roles of $p,q$ exchanged,
+\[
+  \left(\frac{q}{p}\right)=(-1)^{\sum_{k=1}^{m}\lfloor kq/p\rfloor},\qquad
+  \left(\frac{p}{q}\right)=(-1)^{\sum_{j=1}^{n}\lfloor jp/q\rfloor}.
+\]
+So it suffices to show $\sum_{k=1}^{m}\lfloor kq/p\rfloor+\sum_{j=1}^{n}\lfloor jp/q\rfloor=mn$.
+
+Consider the $mn$ pairs $(k,j)$ with $1\le k\le m$ and $1\le j\le n$. No pair satisfies $kq=jp$: since $p$ is prime, $p\mid kq$ would force $p\mid k$ or $p\mid q$, impossible for $1\le k<p$ and $q\ne p$. Thus each pair satisfies exactly one of $jp<kq$ or $kq<jp$.
+
+For fixed $k$, the $j$ with $jp<kq$ are $j<kq/p$. Since $kq/p$ is not an integer, there are $\lfloor kq/p\rfloor$ such $j$, and this number is at most $n$ because $kq/p<q/2$. So the number of pairs with $jp<kq$ is $\sum_k\lfloor kq/p\rfloor$. By the same argument with the roles reversed, the number of pairs with $kq<jp$ is $\sum_j\lfloor jp/q\rfloor$. Adding these two counts gives $mn$.
+\end{proof}
+
+\begin{example}
+Let $p=3$, $q=11$. Then $\left(\frac{11}{3}\right)=\left(\frac{2}{3}\right)=-1$, and $\frac{3-1}{2}\cdot\frac{11-1}{2}=5$. Reciprocity gives $\left(\frac{3}{11}\right)=(-1)^5\cdot\left(\frac{11}{3}\right)^{-1}=(-1)(-1)=1$. Check: $5^2=25\equiv 3\pmod{11}$, so $3$ is a quadratic residue modulo $11$.
+\end{example}
+
+\begin{remark}
+The symbol $\left(\frac{2}{p}\right)$ equals $1$ if $p\equiv\pm1\pmod 8$ and $-1$ otherwise. This is a supplementary law, and it can be proved by Gauss's lemma with $a=2$. It is not needed for the main theorem here.
+\end{remark}
+
 \section{Summary}
 
 Primitive roots make the unit group of $\mathbb{Z}_p$ cyclic, so every unit is a power of one generator. Euler's criterion decides quadratic residuosity by a single modular exponentiation. Both facts reappear in Chapter~\ref{ch:crypto}.
