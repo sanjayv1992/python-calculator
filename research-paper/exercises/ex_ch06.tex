@@ -1,0 +1,12 @@
+\section*{Exercises for Chapter~\ref{ch:crypto}}
+\addcontentsline{toc}{section}{Exercises for Chapter 6}
+
+\begin{enumerate}
+  \item Take $p=11$, $q=13$, so $n=143$ and $\varphi(n)=120$. Choose $e=7$, compute $d$, and encrypt the message $m=20$. Then decrypt to recover $m$.
+  \item Show that in RSA, if $\gcd(e,\varphi(n))\neq 1$, then $e$ has no inverse modulo $\varphi(n)$, and explain why key generation must avoid this.
+  \item Prove that if $m=0$ or $m=1$, then $m^{ed}\equiv m\pmod n$ holds for any $e,d$ with $ed\equiv 1\pmod{\varphi(n)}$.
+  \item Consider a Diffie--Hellman exchange with $p=23$, $g=5$, Alice's secret $a=6$ and Bob's secret $b=15$. Compute $A$, $B$ and the shared key $s$, and verify both parties obtain the same $s$.
+  \item Explain why, if an attacker knows $n$ and $\varphi(n)$, they can factor $n$. (Hint: solve $x^2-(n-\varphi(n)+1)x+n=0$ with $x=p,q$.)
+  \item Explain in your own words why the RSA scheme is insecure if the message $m$ is very small and $e=3$ with no padding. Give a short example.
+  \item The Diffie--Hellman exchange is vulnerable to a man-in-the-middle attack without authentication. Describe the attack in three steps.
+\end{enumerate}
