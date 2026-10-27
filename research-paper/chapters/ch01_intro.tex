@@ -1,0 +1,32 @@
+\chapter{Introduction}\label{ch:intro}
+
+Number theory is the branch of mathematics that studies the integers and their properties. Its questions are often easy to state and very hard to answer. Why are there infinitely many primes? How are primes distributed among the integers? When is one integer a square modulo another? For more than two thousand years these questions were studied for their own sake, and the subject was once regarded as the purest part of mathematics.
+
+This changed in the twentieth century. The discovery of public-key cryptography in 1976 by Diffie and Hellman~\cite{diffie1976}, and the RSA cryptosystem of Rivest, Shamir and Adleman in 1978~\cite{rsa1978}, showed that elementary facts about primes and modular arithmetic underpin the security of everyday communication, banking and online commerce.
+
+\section{Motivation}
+
+The aim of this project is to present the elementary theory of integers in a self-contained way, with full proofs, and then to show how these results are used in cryptography. The project is written for a B.Sc student who has completed a first course in algebra and calculus. It follows the classical textbooks of Niven, Zuckerman and Montgomery~\cite{niven1991} and Hardy and Wright~\cite{hardy2008}, and it uses Python to verify the examples.
+
+\section{Objectives}
+
+The objectives of the project are:
+\begin{enumerate}
+  \item to state and prove the basic results on divisibility, the greatest common divisor, and the fundamental theorem of arithmetic;
+  \item to develop the theory of congruences, including Fermat's and Euler's theorems;
+  \item to study primitive roots and their role in the discrete logarithm problem;
+  \item to explain how RSA and the Diffie--Hellman key exchange use these results;
+  \item to verify the main algorithms computationally, with code that can be run and tested.
+\end{enumerate}
+
+\section{Scope and Limitations}
+
+The project deals only with elementary number theory. Analytic results such as the prime number theorem are mentioned in remarks but are not proved. The cryptographic chapter describes the mathematics of the schemes; it does not treat implementation security, side-channel attacks or standardised parameter sizes, which are areas for further study.
+
+\section{Literature Review}
+
+Euclid's \emph{Elements}, Book~VII, contains the first proof that there are infinitely many primes and the algorithm for the greatest common divisor that bears his name. Gauss's \emph{Disquisitiones Arithmeticae}~(1801) introduced the systematic notation of congruences used throughout this work. Modern textbooks such as Hardy and Wright~\cite{hardy2008} and Koblitz~\cite{koblitz1994} give broader treatments. Stinson~\cite{stinson2006} presents the cryptographic side in detail.
+
+\section{Organisation of the Project}
+
+Chapter~\ref{ch:prelim} collects the preliminary notions. Chapter~\ref{ch:primes} treats divisibility and primes. Chapter~\ref{ch:congruences} develops congruences and the theorems of Fermat and Euler. Chapter~\ref{ch:primroots} covers primitive roots and quadratic residues. Chapter~\ref{ch:crypto} applies the theory to cryptography. Chapter~\ref{ch:results} reports the computational checks, and Chapter~\ref{ch:conclusion} concludes. The Python code is listed in the Appendix.

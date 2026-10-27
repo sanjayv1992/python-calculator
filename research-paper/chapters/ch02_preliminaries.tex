@@ -1,0 +1,87 @@
+\chapter{Preliminaries}\label{ch:prelim}
+
+This chapter fixes notation and states the facts from algebra and the well-ordering principle that are used later. Throughout, $\mathbb{Z}$ denotes the integers and $\mathbb{N}=\{1,2,3,\dots\}$.
+
+\section{Notation}
+
+\begin{definition}
+Let $a,b\in\mathbb{Z}$. We write $a\mid b$ (read ``$a$ divides $b$'') if there is an integer $c$ with $b=ac$. If $a\nmid b$, then $b$ is not a multiple of $a$.
+\end{definition}
+
+\begin{definition}
+An integer $p>1$ is \emph{prime} if its only positive divisors are $1$ and $p$. An integer $n>1$ that is not prime is \emph{composite}.
+\end{definition}
+
+\section{The Well-Ordering Principle and Induction}
+
+\begin{definition}[Well-ordering principle]
+Every nonempty set of non-negative integers has a least element.
+\end{definition}
+
+The well-ordering principle is equivalent to the principle of mathematical induction. Induction is used in several proofs below in the following form: if $P(1)$ holds and $P(n)\Rightarrow P(n+1)$ for every $n\in\mathbb{N}$, then $P(n)$ holds for all $n\in\mathbb{N}$.
+
+\section{Division with Remainder}
+
+\begin{theorem}[Division algorithm]\label{thm:division}
+Let $a,b\in\mathbb{Z}$ with $b>0$. Then there exist unique integers $q$ and $r$ such that
+\[
+  a = bq + r, \qquad 0 \le r < b.
+\]
+\end{theorem}
+
+\begin{proof}
+Consider the set $S=\{a-bk : k\in\mathbb{Z},\ a-bk\ge 0\}$. It is nonempty: taking $k=-|a|$ gives $a+b|a|\ge a+|a|\ge 0$, since $b\ge 1$. By well-ordering, $S$ has a least element $r=a-bq$. Then $r\ge 0$. If $r\ge b$, then $r-b=a-b(q+1)$ would be a smaller non-negative element of $S$, a contradiction. Hence $0\le r<b$.
+
+For uniqueness, suppose $a=bq+r=bq'+r'$ with $0\le r,r'<b$. Then $b(q-q')=r'-r$, so $b\mid (r'-r)$. But $|r'-r|<b$, so $r'-r=0$, and therefore $r=r'$ and $q=q'$.
+\end{proof}
+
+\section{Greatest Common Divisor}
+
+\begin{definition}
+For $a,b\in\mathbb{Z}$, not both zero, the \emph{greatest common divisor} $\gcd(a,b)$ is the largest integer that divides both $a$ and $b$. We set $\gcd(0,0)=0$. Integers $a,b$ are \emph{coprime} if $\gcd(a,b)=1$.
+\end{definition}
+
+\begin{theorem}[Euclidean algorithm]\label{thm:euclid}
+Let $a,b\in\mathbb{N}$ with $b\le a$. Define $r_0=a$, $r_1=b$ and, while $r_{k}\neq 0$, let $r_{k+1}$ be the remainder of $r_{k-1}$ upon division by $r_k$. Then the last nonzero remainder equals $\gcd(a,b)$.
+\end{theorem}
+
+\begin{proof}
+The key observation is that $\gcd(r_{k-1},r_k)=\gcd(r_k,r_{k+1})$. Indeed, $r_{k+1}=r_{k-1}-q r_k$ for some integer $q$, so every common divisor of $r_{k-1}$ and $r_k$ divides $r_{k+1}$, and conversely every common divisor of $r_k$ and $r_{k+1}$ divides $r_{k-1}$. The sequence of remainders is strictly decreasing and non-negative, so it reaches $0$ after finitely many steps. When $r_{k+1}=0$, we have $\gcd(r_{k-1},r_k)=\gcd(r_k,0)=r_k$, which is the last nonzero remainder.
+\end{proof}
+
+\begin{theorem}[Bézout's identity]\label{thm:bezout}
+For $a,b\in\mathbb{Z}$, not both zero, there exist integers $x,y$ such that
+\[
+  ax+by=\gcd(a,b).
+\]
+\end{theorem}
+
+\begin{proof}
+Let $S=\{ax+by : x,y\in\mathbb{Z},\ ax+by>0\}$. This set is nonempty because $a^2+b^2>0$ belongs to it. Let $d=ax_0+by_0$ be its least element. Divide $a$ by $d$: $a=dq+r$ with $0\le r<d$. Then $r=a-dq=a(1-qx_0)+b(-qy_0)$ is of the form $ax+by$. Minimality of $d$ forces $r=0$, so $d\mid a$. Similarly $d\mid b$. Any common divisor of $a$ and $b$ divides $d$, so $d=\gcd(a,b)$.
+\end{proof}
+
+\begin{remark}
+The coefficients $x,y$ in Bézout's identity can be found by running the Euclidean algorithm backwards. This is the \emph{extended Euclidean algorithm}, which is implemented in the Appendix. It is the basis for computing modular inverses in RSA key generation.
+\end{remark}
+
+\begin{corollary}\label{cor:coprime}
+Integers $a,b$ are coprime if and only if there exist $x,y\in\mathbb{Z}$ with $ax+by=1$.
+\end{corollary}
+
+\section{Basic Facts about Primes}
+
+\begin{lemma}[Euclid's lemma]\label{lem:euclid}
+Let $p$ be prime and $a,b\in\mathbb{Z}$. If $p\mid ab$, then $p\mid a$ or $p\mid b$.
+\end{lemma}
+
+\begin{proof}
+Suppose $p\nmid a$. Then $\gcd(p,a)=1$, because the only positive divisors of $p$ are $1$ and $p$. By Corollary~\ref{cor:coprime} there are integers $x,y$ with $px+ay=1$. Multiplying by $b$ gives $b=pbx+aby$. Since $p$ divides $pbx$ and $ab$, it divides $b$.
+\end{proof}
+
+\begin{example}
+Take $p=5$, $a=6$, $b=10$. Then $5\mid 60=6\cdot 10$, and indeed $5\mid 10$. Take instead $a=2$, $b=3$, $p=6$: here $6$ is not prime, and $6\mid 6=2\cdot 3$ while $6\nmid 2$ and $6\nmid 3$. This shows why primality is needed in Lemma~\ref{lem:euclid}.
+\end{example}
+
+\section{Summary}
+
+This chapter introduced divisibility, the division algorithm, the Euclidean algorithm and Bézout's identity, together with Euclid's lemma. These tools are used repeatedly in Chapter~\ref{ch:primes} to prove the fundamental theorem of arithmetic.

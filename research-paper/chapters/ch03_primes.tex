@@ -1,0 +1,77 @@
+\chapter{Primes and the Fundamental Theorem of Arithmetic}\label{ch:primes}
+
+Primes are the building blocks of the integers. This chapter proves that every integer greater than $1$ factors into primes in exactly one way, that there are infinitely many primes, and how primes can be listed efficiently.
+
+\section{Existence of Prime Factorisation}
+
+\begin{theorem}\label{thm:existence}
+Every integer $n\ge 2$ can be written as a product of primes.
+\end{theorem}
+
+\begin{proof}
+We use strong induction on $n$. If $n$ is prime, there is nothing to prove. Otherwise $n=ab$ with $1<a,b<n$. By the induction hypothesis, both $a$ and $b$ are products of primes, and so is $n=ab$.
+\end{proof}
+
+\section{Uniqueness of Prime Factorisation}
+
+\begin{theorem}[Fundamental theorem of arithmetic]\label{thm:fta}
+Every integer $n\ge 2$ can be written as
+\[
+  n = p_1 p_2 \cdots p_r,
+\]
+where $p_1\le p_2\le\dots\le p_r$ are primes. This representation is unique.
+\end{theorem}
+
+\begin{proof}
+Existence is Theorem~\ref{thm:existence}. For uniqueness, suppose
+\[
+  p_1 p_2\cdots p_r = q_1 q_2\cdots q_s,
+\]
+with all $p_i$ and $q_j$ prime and both lists sorted. We show by induction on $r$ that the two lists coincide.
+
+Since $p_1$ divides the right-hand side, $p_1$ divides some $q_j$ by repeated use of Lemma~\ref{lem:euclid}. As $q_j$ is prime and $p_1>1$, we get $p_1=q_j$. Cancel $p_1$ from both sides. If $r=1$, the left side is now $1$, so the right side must also be $1$, which forces $s=1$. If $r>1$, the induction hypothesis applied to the shorter products gives $r-1=s-1$ and the same primes in the same order.
+\end{proof}
+
+\begin{remark}
+Uniqueness can fail in other rings. For example, in $\mathbb{Z}[\sqrt{-5}]$ we have $6 = 2\cdot 3 = (1+\sqrt{-5})(1-\sqrt{-5})$, and the factors are irreducible but not prime. This is why Euclid's lemma is the key property that makes the theorem work over $\mathbb{Z}$.
+\end{remark}
+
+\section{Infinitude of Primes}
+
+\begin{theorem}[Euclid]\label{thm:infinite}
+There are infinitely many primes.
+\end{theorem}
+
+\begin{proof}
+Suppose there are only finitely many primes $p_1,\dots,p_k$. Let $N=p_1p_2\cdots p_k+1$. Then $N\ge 2$, so $N$ has a prime divisor $p$ by Theorem~\ref{thm:existence}. Since $p$ is one of the $p_i$, $p$ divides $N-p_1\cdots p_k=1$, which is impossible. Hence there are infinitely many primes.
+\end{proof}
+
+\begin{example}
+For $k=3$ with $p_1=2$, $p_2=3$, $p_3=5$, the number $N=2\cdot 3\cdot 5+1=31$ is itself prime. The proof does not claim that $N$ is always new, only that some prime not in the list must divide it.
+\end{example}
+
+\section{Listing Primes: The Sieve of Eratosthenes}
+
+To find all primes up to $n$, write the integers from $2$ to $n$ and repeatedly remove the multiples of each prime in turn. The following fact limits the work.
+
+\begin{lemma}\label{lem:sqrt}
+If $n$ is composite, then $n$ has a prime divisor $p$ with $p\le \sqrt{n}$.
+\end{lemma}
+
+\begin{proof}
+Write $n=ab$ with $1<a\le b<n$. Then $a^2\le ab=n$, so $a\le\sqrt{n}$. The smallest prime divisor of $a$ is at most $a$, hence at most $\sqrt{n}$, and it also divides $n$.
+\end{proof}
+
+Consequently, to sieve up to $n$ it is enough to remove multiples of primes $p\le\sqrt{n}$. The routine \texttt{sieve} in Appendix~\ref{app:code} implements this idea.
+
+\begin{example}
+Up to $30$, the primes are $2,3,5,7,11,13,17,19,23,29$. There are $10$ of them. The primes up to $100$ number $25$, and the code in \texttt{test\_numtheory.py} checks this count.
+\end{example}
+
+\section{Remark on the Distribution of Primes}
+
+The prime number theorem states that the number $\pi(x)$ of primes up to $x$ satisfies $\pi(x)\sim x/\log x$ as $x\to\infty$. Its proof uses complex analysis and is not given here; see Hardy and Wright~\cite{hardy2008}. For the purposes of this project the theorem only explains why primes of about $100$ digits are common enough to find by random search, which is important for RSA key generation in Chapter~\ref{ch:crypto}.
+
+\section{Summary}
+
+Every integer greater than one has a unique prime factorisation. There are infinitely many primes, and the sieve lists them up to a given bound with work controlled by Lemma~\ref{lem:sqrt}.

@@ -1,0 +1,114 @@
+\chapter{Congruences, Fermat's and Euler's Theorems}\label{ch:congruences}
+
+Congruences let us do arithmetic with remainders. They are the language in which RSA and Diffie--Hellman are stated.
+
+\section{Congruences}
+
+\begin{definition}
+Let $n\ge 1$. We write $a\equiv b\pmod n$ if $n\mid (a-b)$. We say $a$ and $b$ are \emph{congruent modulo $n$}.
+\end{definition}
+
+\begin{proposition}\label{prop:cong-equiv}
+For fixed $n\ge 1$, congruence modulo $n$ is an equivalence relation on $\mathbb{Z}$. Moreover, if $a\equiv b$ and $c\equiv d\pmod n$, then $a+c\equiv b+d$ and $ac\equiv bd\pmod n$.
+\end{proposition}
+
+\begin{proof}
+Reflexivity, symmetry and transitivity follow directly from the definition, since $n\mid 0$, $n\mid(a-b)\Rightarrow n\mid(b-a)$, and $n\mid(a-b)$, $n\mid(b-c)$ imply $n\mid(a-c)$. For the second claim, write $a-b=nk$ and $c-d=nl$. Then $(a+c)-(b+d)=n(k+l)$ and $ac-bd=a(c-d)+d(a-b)=n(al+dk)$.
+\end{proof}
+
+Each integer is congruent to exactly one of $0,1,\dots,n-1$ modulo $n$, by Theorem~\ref{thm:division}. So the congruence classes modulo $n$ form the set $\mathbb{Z}_n=\{0,1,\dots,n-1\}$ with addition and multiplication taken modulo $n$.
+
+\section{Inverses Modulo $n$}
+
+\begin{theorem}\label{thm:inverse}
+Let $n\ge 2$. The integer $a$ has an inverse modulo $n$, meaning some $x$ with $ax\equiv 1\pmod n$, if and only if $\gcd(a,n)=1$. In that case the inverse is unique modulo $n$.
+\end{theorem}
+
+\begin{proof}
+If $ax\equiv 1\pmod n$, then $ax-1=ny$ for some integer $y$, so $ax-ny=1$ and $\gcd(a,n)=1$ by Corollary~\ref{cor:coprime}. Conversely, if $\gcd(a,n)=1$, Bézout's identity gives $ax+ny=1$, so $ax\equiv 1\pmod n$. For uniqueness, if $ax\equiv ax'\equiv 1$, then $n\mid a(x-x')$. Since $\gcd(a,n)=1$, Euclid's lemma in its general form gives $n\mid (x-x')$.
+\end{proof}
+
+\begin{remark}
+The extended Euclidean algorithm (\texttt{ext\_gcd} in the Appendix) computes $x$ in the proof above. It is the standard way to compute modular inverses, and RSA key generation uses it to find the private exponent.
+\end{remark}
+
+\section{Euler's Totient Function}
+
+\begin{definition}
+Euler's totient function is
+\[
+  \varphi(n)=\#\{\,k : 1\le k\le n,\ \gcd(k,n)=1\,\}.
+\]
+\end{definition}
+
+\begin{proposition}\label{prop:phi-prime}
+If $p$ is prime and $k\ge 1$, then $\varphi(p)=p-1$ and $\varphi(p^k)=p^k-p^{k-1}$.
+\end{proposition}
+
+\begin{proof}
+The integers $1\le m\le p$ are coprime to $p$ except for $m=p$, so $\varphi(p)=p-1$. For $p^k$, the integers not coprime to $p^k$ are exactly the multiples of $p$ in $[1,p^k]$, of which there are $p^{k-1}$. Hence $\varphi(p^k)=p^k-p^{k-1}$.
+\end{proof}
+
+\begin{proposition}\label{prop:phi-mult}
+If $\gcd(m,n)=1$, then $\varphi(mn)=\varphi(m)\varphi(n)$.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+The map $k\mapsto (k \bmod m,\ k\bmod n)$ is a bijection between $\mathbb{Z}_{mn}$ and $\mathbb{Z}_m\times\mathbb{Z}_n$ by the Chinese remainder theorem, and $\gcd(k,mn)=1$ exactly when $\gcd(k,m)=\gcd(k,n)=1$. The full proof of the bijection is standard and is given in Niven, Zuckerman and Montgomery~\cite{niven1991}.
+\end{proof}
+
+\begin{example}
+$\varphi(10)=\varphi(2)\varphi(5)=1\cdot 4=4$. The reduced residues modulo $10$ are $1,3,7,9$.
+\end{example}
+
+\section{Reduced Residue Systems}
+
+A \emph{reduced residue system} modulo $n$ is a set of $\varphi(n)$ integers, one from each congruence class coprime to $n$.
+
+\begin{lemma}\label{lem:reduced}
+If $\gcd(a,n)=1$ and $r_1,\dots,r_{\varphi(n)}$ is a reduced residue system modulo $n$, then $ar_1,\dots,ar_{\varphi(n)}$ is also a reduced residue system modulo $n$.
+\end{lemma}
+
+\begin{proof}
+Each $ar_i$ is coprime to $n$. If $ar_i\equiv ar_j\pmod n$, then multiplying by an inverse of $a$ (Theorem~\ref{thm:inverse}) gives $r_i\equiv r_j$, so $i=j$. Thus the $\varphi(n)$ numbers $ar_i$ lie in distinct coprime classes, which are exactly $\varphi(n)$ in number.
+\end{proof}
+
+\section{Euler's Theorem}
+
+\begin{theorem}[Euler]\label{thm:euler}
+If $\gcd(a,n)=1$, then $a^{\varphi(n)}\equiv 1\pmod n$.
+\end{theorem}
+
+\begin{proof}
+Let $r_1,\dots,r_{\varphi(n)}$ be a reduced residue system. By Lemma~\ref{lem:reduced}, the numbers $ar_1,\dots,ar_{\varphi(n)}$ are a permutation of the $r_i$ modulo $n$. Multiplying all of them together gives
+\[
+  a^{\varphi(n)}\,r_1r_2\cdots r_{\varphi(n)} \equiv r_1 r_2\cdots r_{\varphi(n)}\pmod n.
+\]
+The product $P=r_1\cdots r_{\varphi(n)}$ is coprime to $n$, so we can cancel it, giving $a^{\varphi(n)}\equiv 1\pmod n$.
+\end{proof}
+
+\section{Fermat's Little Theorem}
+
+\begin{corollary}[Fermat]\label{cor:fermat}
+If $p$ is prime and $p\nmid a$, then $a^{p-1}\equiv 1\pmod p$. Consequently $a^p\equiv a\pmod p$ for every integer $a$.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:euler} with $n=p$ and $\varphi(p)=p-1$ from Proposition~\ref{prop:phi-prime}. If $p\mid a$, both sides of $a^p\equiv a$ are $\equiv 0$.
+\end{proof}
+
+\begin{example}
+$2^{100}\bmod 101$: since $101$ is prime and $2\not\equiv 0$, Fermat gives $2^{100}\equiv 1\pmod{101}$. This is verified by the routine \texttt{modpow(2, 100, 101)} in Appendix~\ref{app:code}.
+\end{example}
+
+\section{Fast Modular Exponentiation}
+
+Computing $a^e\bmod n$ by multiplying $a$ by itself $e$ times is far too slow when $e$ has hundreds of digits. Write $e$ in binary, $e=\sum_i \varepsilon_i 2^i$. Then
+\[
+  a^{e} = \prod_{i:\ \varepsilon_i=1} a^{2^i},
+\]
+and each $a^{2^i}$ is obtained by squaring the previous one. Reducing modulo $n$ at each step keeps every intermediate number below $n^2$. This is the square-and-multiply method implemented in \texttt{modpow}. It needs about $\log_2 e$ squarings and at most as many multiplications, which is what makes RSA practical.
+
+\section{Summary}
+
+Congruences form a ring $\mathbb{Z}_n$. Its units are the classes coprime to $n$, and their number is $\varphi(n)$. Euler's theorem generalises Fermat's little theorem, and both are the key facts behind the correctness of RSA in Chapter~\ref{ch:crypto}.

@@ -1,0 +1,82 @@
+\chapter{Computational Verification and Results}\label{ch:results}
+
+The theorems in Chapters~\ref{ch:primes}--\ref{ch:crypto} are proved by hand. This chapter reports numerical checks of the same statements, computed with the routines in Appendix~\ref{app:code}. The checks do not replace the proofs. They confirm that the statements and the algorithms agree on concrete inputs, and they catch arithmetic slips in the examples.
+
+All values below were produced by running the code in \texttt{research-paper/code/}. The test suite (\texttt{python -m pytest research-paper/code}) passes with 312 test cases.
+
+\section{Primes up to 100}
+
+The sieve of Eratosthenes (Section~3.4) returns exactly $25$ primes up to $100$, in agreement with the count $\pi(100)=25$:
+\begin{center}
+\begin{tabular}{rrrrrrrrrr}
+2 & 3 & 5 & 7 & 11 & 13 & 17 & 19 & 23 & 29\\
+31 & 37 & 41 & 43 & 47 & 53 & 59 & 61 & 67 & 71\\
+73 & 79 & 83 & 89 & 97 & & & & &
+\end{tabular}
+\end{center}
+
+\section{Euler's totient}
+
+Table~\ref{tab:phi} lists $\varphi(n)$ for $1\le n\le 20$, computed by \texttt{phi}. Each entry agrees with the brute-force count in the test suite, which checks all $n<300$.
+
+\begin{table}[h]
+\centering
+\caption{Values of $\varphi(n)$ for $1\le n\le 20$}\label{tab:phi}
+\begin{tabular}{c|cccccccccc}
+$n$ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10\\\hline
+$\varphi(n)$ & 1 & 1 & 2 & 2 & 4 & 2 & 6 & 4 & 6 & 4\\\hline
+$n$ & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 & 19 & 20\\\hline
+$\varphi(n)$ & 10 & 4 & 12 & 6 & 8 & 8 & 16 & 6 & 18 & 8
+\end{tabular}
+\end{table}
+
+A consistency check from Chapter~\ref{ch:congruences}: $\sum_{d\mid 12}\varphi(d)=12$. The code gives $12$, as the identity requires.
+
+\section{Extended Euclidean algorithm}
+
+Table~\ref{tab:bezout} gives Bézout coefficients for several pairs. In every row, $ax+by=\gcd(a,b)$ holds exactly, which is checked by the code and also by hand.
+
+\begin{table}[h]
+\centering
+\caption{Bézout coefficients from \texttt{ext\_gcd}}\label{tab:bezout}
+\begin{tabular}{rrrrrl}
+\hline
+$a$ & $b$ & $\gcd(a,b)$ & $x$ & $y$ & check $ax+by$\\\hline
+252 & 198 & 18 & 4 & $-5$ & $1008-990=18$\\
+973 & 301 & 7 & 13 & $-42$ & $12649-12642=7$\\
+1071 & 462 & 21 & $-3$ & 7 & $-3213+3234=21$\\
+240 & 46 & 2 & $-9$ & 47 & $-2160+2162=2$\\
+17 & 3120 & 1 & $-367$ & 2 & $-6239+6240=1$\\\hline
+\end{tabular}
+\end{table}
+
+The last row is the one used in the RSA example of Chapter~\ref{ch:crypto}: it shows that $17$ is invertible modulo $\varphi(3233)=3120$, with inverse $-367\equiv 2753\pmod{3120}$.
+
+\section{Modular exponentiation}
+
+Table~\ref{tab:modpow} shows values of \texttt{modpow}. The row $2^{100}\bmod 101$ confirms Fermat's little theorem (Corollary~\ref{cor:fermat}), since $101$ is prime. The rows with $3^{200}\bmod 1000003$ and the RSA numbers illustrate the routine on larger exponents.
+
+\begin{table}[h]
+\centering
+\caption{Results of \texttt{modpow}}\label{tab:modpow}
+\begin{tabular}{rrrr}
+\hline
+base & exponent & modulus & result\\\hline
+2 & 10 & 1000 & 24\\
+7 & 128 & 13 & 3\\
+2 & 100 & 101 & 1\\
+65 & 17 & 3233 & 2790\\
+2790 & 2753 & 3233 & 65\\
+3 & 200 & 1000003 & 333986\\\hline
+\end{tabular}
+\end{table}
+
+Two of these values were also checked by hand. $7^{128}\bmod 13$: since $7^{12}\equiv 1$ and $128\equiv 8\pmod{12}$, we get $7^8\equiv 3$. The RSA rows reproduce the worked example of Section~6.1.3, where decryption returns the original message $65$.
+
+\section{Limits of the checks}
+
+These tests cover small inputs only. The RSA parameters ($n=3233$) are far too small for real use, and the code does no timing analysis at large sizes. Results for cryptographic sizes would need a separate study, which is noted as future work in Chapter~\ref{ch:conclusion}.
+
+\section{Summary}
+
+The routines agree with the theorems on every test case. The worked numerical examples in Chapters~\ref{ch:congruences}--\ref{ch:crypto} are reproduced exactly.

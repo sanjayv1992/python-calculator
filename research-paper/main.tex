@@ -1,0 +1,103 @@
+\documentclass[12pt,a4paper]{report}
+
+% ---------- Packages ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{verbatim}
+\onehalfspacing
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\usepackage[style=numeric,backend=biber]{biblatex}
+\addbibresource{references.bib}
+
+% ---------- Theorem environments ----------
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{\textbf{[Paper Title: e.g. Elementary Number Theory and Its Applications to Public-Key Cryptography]}}
+\author{[Student Name]\\[2pt]B.Sc (Mathematics), Semester VI\\[2pt][College Name]\\[2pt]Uttar Pradesh Rajarshi Tandon Open University}
+\date{[Month Year]}
+
+\begin{document}
+
+% ---------- Cover ----------
+\begin{titlepage}
+  \centering
+  {\Large\bfseries UTTAR PRADESH RAJARSHI TANDON OPEN UNIVERSITY}\\[6pt]
+  {\normalsize Shantipuram (Sector-F), Phaphamau, Prayagraj -- 211013}\\[1.5cm]
+  {\large PROJECT TITLE}\\[4pt]
+  {\LARGE\bfseries [Paper Title]}\\[1.2cm]
+  {\large Submitted by}\\[4pt]
+  {\Large [Student Name]}\\[2pt]
+  {Enrollment No.: [Enrollment Number]}\\[1cm]
+  {\large Under the guidance of}\\[4pt]
+  {\Large [Guide Name]}\\[2pt]
+  {[Designation, College Name]}\\[1.2cm]
+  {\large In partial fulfilment of the requirements for the degree of}\\[4pt]
+  {\Large\bfseries BACHELOR OF SCIENCE (MATHEMATICS)}\\[6pt]
+  {Course Code: [Course Code] \quad Type: Research Project}\\[1.5cm]
+  {[Month Year]}
+\end{titlepage}
+
+% ---------- Certificate ----------
+\chapter*{Certificate}
+\addcontentsline{toc}{chapter}{Certificate}
+This is to certify that the project report entitled \emph{[Paper Title]} submitted by [Student Name], Enrollment No.\ [Enrollment Number], in partial fulfilment of the requirements for the degree of Bachelor of Science (Mathematics) of Uttar Pradesh Rajarshi Tandon Open University, is an original work carried out under my supervision.
+
+\vspace{2.5cm}
+\noindent\begin{tabular}{p{7cm}p{7cm}}
+[Guide Name] & [Co-ordinator Name]\\
+Guide, [College Name] & Co-ordinator, [College Name]
+\end{tabular}
+
+\chapter*{Declaration}
+\addcontentsline{toc}{chapter}{Declaration}
+I declare that this project is my own work, that every source I have used is acknowledged in the text and in the references, and that no part of it has been submitted for any other degree.
+
+\vspace{1.5cm}
+\noindent Place: [Place]\hfill [Student Name]\\
+Date: [Date]\hfill Signature
+
+\chapter*{Acknowledgement}
+\addcontentsline{toc}{chapter}{Acknowledgement}
+[Write your own acknowledgement: guide, teachers, family, and the open-university support staff.]
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+[Write a 200--250 word abstract after the paper is complete. State the problem, the methods, the main results, and the computational checks.]
+
+\tableofcontents
+\listoftables
+
+% ---------- Main body ----------
+\include{chapters/ch01_intro}
+\include{chapters/ch02_preliminaries}
+\include{exercises/ex_ch02}
+\include{chapters/ch03_primes}
+\include{exercises/ex_ch03}
+\include{chapters/ch04_congruences}
+\include{exercises/ex_ch04}
+\include{chapters/ch05_primitive_roots}
+\include{exercises/ex_ch05}
+\include{chapters/ch06_cryptography}
+\include{exercises/ex_ch06}
+\include{chapters/ch07_results}
+\include{chapters/ch08_conclusion}
+
+\appendix
+\include{appendix/code}
+
+% ---------- References ----------
+\printbibliography[heading=bibintoc,title={References}]
+
+\end{document}

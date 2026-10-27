@@ -1,0 +1,66 @@
+\chapter{Applications to Public-Key Cryptography}\label{ch:crypto}
+
+Public-key cryptography lets two parties communicate securely without sharing a secret in advance. This chapter explains the RSA cryptosystem and the Diffie--Hellman key exchange, and shows how the results of the previous chapters make them work.
+
+\section{The RSA Cryptosystem}
+
+\subsection{Key generation}
+
+\begin{enumerate}
+  \item Choose two distinct large primes $p$ and $q$. Let $n=pq$ and $\varphi(n)=(p-1)(q-1)$, by Proposition~\ref{prop:phi-mult}.
+  \item Choose $e$ with $1<e<\varphi(n)$ and $\gcd(e,\varphi(n))=1$.
+  \item Compute $d$ with $ed\equiv 1\pmod{\varphi(n)}$. This uses the extended Euclidean algorithm (Theorem~\ref{thm:inverse}).
+  \item The public key is $(n,e)$. The private key is $d$, and $p,q,\varphi(n)$ must be kept secret.
+\end{enumerate}
+
+\subsection{Encryption and decryption}
+
+A message is an integer $m$ with $0\le m<n$. Encryption is $c\equiv m^e\pmod n$, and decryption is $m\equiv c^d\pmod n$.
+
+\begin{theorem}[Correctness of RSA]\label{thm:rsa}
+If $ed\equiv 1\pmod{\varphi(n)}$, then $(m^e)^d\equiv m\pmod n$ for every integer $m$.
+\end{theorem}
+
+\begin{proof}
+Write $ed=1+k\varphi(n)$ for some integer $k\ge 0$. We show $m^{ed}\equiv m\pmod p$. If $p\mid m$, both sides are $\equiv 0$. Otherwise Fermat's little theorem (Corollary~\ref{cor:fermat}) gives $m^{p-1}\equiv 1$, and since $(p-1)\mid\varphi(n)$,
+\[
+  m^{ed}=m\cdot (m^{p-1})^{k(q-1)}\equiv m\pmod p.
+\]
+The same argument works modulo $q$. Since $p$ and $q$ are distinct primes, $m^{ed}\equiv m\pmod{pq}$.
+\end{proof}
+
+\begin{remark}
+The proof uses Fermat's theorem prime by prime, which is simpler than Euler's theorem modulo $n$ directly. Both give the same result because $\varphi(n)$ is a multiple of $p-1$ and of $q-1$.
+\end{remark}
+
+\subsection{A worked example with small primes}
+
+Take $p=61$ and $q=53$. Then $n=3233$ and $\varphi(n)=60\cdot 52=3120$. Choose $e=17$. The extended Euclidean algorithm gives $d=2753$, since $17\cdot 2753=46801=15\cdot 3120+1$. To encrypt $m=65$:
+\[
+  c\equiv 65^{17}\equiv 2790\pmod{3233}.
+\]
+Decryption gives $2790^{2753}\equiv 65\pmod{3233}$.
+
+These numbers are far too small to be secure. They are used only to check the algebra. The code in \texttt{code/} can reproduce them.
+
+\section{The Diffie--Hellman Key Exchange}
+
+Let $p$ be a large prime and $g$ a primitive root modulo $p$. These public values are shared openly.
+
+\begin{enumerate}
+  \item Alice chooses a secret $a$ and sends $A\equiv g^a\pmod p$.
+  \item Bob chooses a secret $b$ and sends $B\equiv g^b\pmod p$.
+  \item Alice computes $s\equiv B^a\pmod p$. Bob computes $s'\equiv A^b\pmod p$.
+\end{enumerate}
+
+Both computations give the same value, because $B^a\equiv g^{ab}\equiv A^b\pmod p$. An eavesdropper who sees $p$, $g$, $A$ and $B$ must solve a discrete logarithm problem to find $a$ or $b$, as discussed in Chapter~\ref{ch:primroots}. The original scheme is described in Diffie and Hellman~\cite{diffie1976}.
+
+\section{Security Assumptions}
+
+The security of RSA rests on the belief that factoring $n=pq$ is hard when $p$ and $q$ are large and randomly chosen. Knowing $\varphi(n)$ together with $n$ is enough to recover $p$ and $q$, so computing $\varphi(n)$ is as hard as factoring. The security of Diffie--Hellman rests on the discrete logarithm problem. Neither assumption has been proved, and both may fail against future algorithms or quantum computers. Stinson~\cite{stinson2006} and Koblitz~\cite{koblitz1994} discuss these assumptions and the parameter sizes used in practice.
+
+The mathematics in this chapter does not cover implementation issues such as padding schemes, side-channel attacks, or random number generation. A secure system must address these as well.
+
+\section{Summary}
+
+RSA encrypts by raising to the power $e$ modulo $n$, and decrypts with the power $d$. Its correctness follows from Fermat's theorem, and its key generation uses the extended Euclidean algorithm. Diffie--Hellman uses the commutativity of exponentiation together with the difficulty of discrete logarithms.
