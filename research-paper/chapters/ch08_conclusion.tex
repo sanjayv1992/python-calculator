@@ -1,3 +1,33 @@
 \chapter{Conclusion and Future Work}\label{ch:conclusion}
 
-\textit{[Stage 4 -- to be drafted after the results are final. Summarise the main theorems, the computational checks, and the cryptographic applications. Suggest further work: the prime number theorem, elliptic-curve cryptography, and the complexity of integer factorisation.]}
+This project set out to present the elementary theory of integers with full proofs and to show how that theory supports public-key cryptography. This chapter summarises the results, states the limits of the work, and lists directions for further study.
+
+\section{Summary of Results}
+
+\begin{enumerate}
+  \item The division algorithm, the Euclidean algorithm and Bézout's identity (Chapter~\ref{ch:prelim}).
+  \item The existence and uniqueness of prime factorisation, and Euclid's proof that there are infinitely many primes (Chapter~\ref{ch:primes}).
+  \item Congruence arithmetic, the totient function, and the theorems of Euler and Fermat (Chapter~\ref{ch:congruences}).
+  \item Primitive roots, discrete logarithms and Euler's criterion for quadratic residues (Chapter~\ref{ch:primroots}).
+  \item The correctness proof of RSA and the Diffie--Hellman key exchange (Chapter~\ref{ch:crypto}).
+  \item Computational checks of these statements, with all test cases passing (Chapter~\ref{ch:results}).
+\end{enumerate}
+
+\section{Limitations}
+
+The project is limited in three ways. First, the proofs in Chapters~\ref{ch:primes} to~\ref{ch:primroots} are given at the level of a B.Sc course, and some results, such as the existence of primitive roots, are only outlined. Second, the cryptographic chapter describes the mathematics of the schemes but not their implementation or the attacks that target implementations. Third, the computations use small numbers. They verify the algebra but say nothing about the running time at cryptographic sizes.
+
+\section{Future Work}
+
+The following topics would extend this project:
+\begin{itemize}
+  \item A full proof of the existence of primitive roots modulo $p$, and of the classification of moduli that have them.
+  \item The quadratic reciprocity law and its use in deciding whether a given integer is a square modulo a prime.
+  \item The prime number theorem, and the Miller--Rabin primality test, which is the probabilistic test used in practice to generate RSA keys.
+  \item Elliptic-curve cryptography, which replaces the multiplicative group modulo $p$ used here with the group of points on an elliptic curve.
+  \item The computational complexity of integer factorisation and discrete logarithms, and a timing study of the routines in Appendix~\ref{app:code} at realistic key sizes.
+\end{itemize}
+
+\section{Closing Remark}
+
+Number theory was once studied only for its own sake. The results in this project show that the same elementary facts about divisibility and congruences now protect everyday communication. The work also shows that a short computer program can check a theorem's examples, and that checking an example by hand and by machine is a good habit for any mathematician.
