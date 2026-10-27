@@ -1,0 +1,14 @@
+\chapter{Python Code Listings}\label{app:code}
+
+The routines below are in \texttt{research-paper/code/numtheory.py}, and their tests are in \texttt{research-paper/code/test\_numtheory.py}. Run the tests with \texttt{python -m pytest research-paper/code}.
+
+\section{Core routines}
+
+The full source is kept in the repository and is included here by reference. Listing it in the printed copy is optional and should be decided with the guide.
+
+\begin{itemize}
+  \item \texttt{sieve(n)}: the primes up to $n$ (Eratosthenes).
+  \item \texttt{gcd(a, b)}: the Euclidean algorithm (Theorem~\ref{thm:euclid}).
+  \item \texttt{ext\_gcd(a, b)}: returns $(d,x,y)$ with $ax+by=d=\gcd(a,b)$ (Theorem~\ref{thm:bezout}).
+  \item \texttt{modpow(b, e, m)}: square-and-multiply modular exponentiation.
+\end{itemize}
