@@ -43,6 +43,24 @@ def ext_gcd(a: int, b: int) -> tuple[int, int, int]:
     return old_r, old_x, old_y
 
 
+def phi(n: int) -> int:
+    """Euler's totient: count of 1 <= k <= n with gcd(k, n) = 1 (Chapter 4)."""
+    if n < 1:
+        raise ValueError("n must be positive")
+    result = n
+    m = n
+    p = 2
+    while p * p <= m:
+        if m % p == 0:
+            while m % p == 0:
+                m //= p
+            result -= result // p
+        p += 1
+    if m > 1:
+        result -= result // m
+    return result
+
+
 def modpow(base: int, exp: int, mod: int) -> int:
     """Compute base**exp mod mod by repeated squaring (used in Chapter 4)."""
     if mod <= 0:

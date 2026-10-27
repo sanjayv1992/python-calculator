@@ -3,7 +3,7 @@ import random
 
 import pytest
 
-from numtheory import ext_gcd, gcd, modpow, sieve
+from numtheory import ext_gcd, gcd, modpow, phi, sieve
 
 
 def test_sieve_small_primes():
@@ -50,3 +50,27 @@ def test_modpow_rejects_bad_input():
         modpow(2, 3, 0)
     with pytest.raises(ValueError):
         modpow(2, -1, 5)
+
+
+def brute_phi(n):
+    return sum(1 for k in range(1, n + 1) if math.gcd(k, n) == 1)
+
+
+@pytest.mark.parametrize("n", range(1, 300))
+def test_phi_matches_brute_force(n):
+    assert phi(n) == brute_phi(n)
+
+
+def test_phi_known_values():
+    assert phi(10) == 4
+    assert phi(101) == 100
+    assert phi(36) == 12
+
+
+def test_euler_theorem_numerically():
+    rng = random.Random(2)
+    for _ in range(200):
+        n = rng.randint(2, 5000)
+        a = rng.randint(1, 10**6)
+        if math.gcd(a, n) == 1:
+            assert modpow(a, phi(n), n) == 1
